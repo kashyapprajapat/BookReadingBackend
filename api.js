@@ -1,6 +1,6 @@
 const fastify = require("fastify")({ logger: true });
 require("dotenv").config();
-const connection = require("./Database/conn.js");
+//const connection = require("./Database/conn.js");
 const cors = require("@fastify/cors");
 
 const PORT = process.env.PORT || 7070;
@@ -17,6 +17,28 @@ function queryDatabase(sql) {
     });
   });
 }
+// Register Fastify Swagger
+fastify.register(require('fastify-swagger'), {
+  routePrefix: '/docs',
+  swagger: {
+    info: {
+      title: 'Book CRUD API',
+      description: 'API documentation for Book CRUD operations',
+      version: '1.0.0'
+    },
+    externalDocs: {
+      url: 'https://swagger.io',
+      description: 'Find more info here'
+    },
+    schemes: ['http'],
+    consumes: ['application/json'],
+    produces: ['application/json'],
+    tags: [
+      { name: 'books', description: 'Books related endpoints' }
+    ]
+  },
+  exposeRoute: true
+});
 
 
         // ========== Base Route For testing ===================//
